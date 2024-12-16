@@ -2,11 +2,12 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Annotated, Optional, List
 from uuid import uuid4, UUID
+import asyncio
+
 
 from fastapi import FastAPI, HTTPException, Request, Response, Cookie
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from pytonconnect import TonConnect
 
 from requests import CheckProofRequest
 
@@ -28,14 +29,9 @@ app.add_middleware(
     allow_headers=["*", "ngrok-skip-browser-warning"],
 )
 
-# TON Connect instance
-connector = TonConnect(
-    manifest_url='https://raw.githubusercontent.com/daria021/dummy/refs/heads/main/tonconnect-manifest.json',
-)
 
 # Store active connection status
 connections = {}
-import asyncio
 
 # SSE Queue to manage events
 event_queue = asyncio.Queue()
